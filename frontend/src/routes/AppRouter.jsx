@@ -1,11 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "../pages/auth/Login";
+import Login from "../pages/Login";
+import Home from "../pages/Home";
 
 export default function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<h1>HOME OK</h1>} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/home" element={<Home/>} />
+      <Route path="/login" element={<Login/>} />
     </Routes>
   );
 }

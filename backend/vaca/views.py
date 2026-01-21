@@ -1,53 +1,30 @@
-from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+# views.py
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def login_view(request):
-    serializer = LoginSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.validated_data
-        refresh = RefreshToken.for_user(user)
-        
-        return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'user': UserSerializer(user).data
-        })
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class LoginView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        tokens = response.data
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def register_view(request):
-    serializer = RegisterSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
-        
-        return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'user': UserSerializer(user).data
-        }, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        res = Response({"detail": "Login OK"})
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def profile_view(request):
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
+        res.set_cookie(
+            key="access_token",
+            value=tokens["access"],
+            httponly=True,
+            secure=False,        # True en producción (HTTPS)
+            samesite="Lax",
+            max_age=60 * 15      # 15 min
+        )
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def logout_view(request):
-    try:
-        refresh_token = request.data.get("refresh")
-        token = RefreshToken(refresh_token)
-        token.blacklist()
-        return Response({"message": "Logout exitoso"}, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        res.set_cookie(
+            key="refresh_token",
+            value=tokens["refresh"],
+            httponly=True,
+            secure=False,
+            samesite="Lax",
+            max_age=60 * 60 * 24  # 1 día
+        )
+
+        return res

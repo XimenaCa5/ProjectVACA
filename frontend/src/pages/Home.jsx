@@ -1,11 +1,11 @@
 import React from "react";
 
-const Home = () => {
+export default function Home () {
+  const token = localStorage.getItem("access_token");
+
   return (
     <div>
-      <h1>home</h1>
+      <p className="text-white">{token ? token.substring(0, 20) + "..." : "No hay token"}</p>
     </div>
   );
-};
-
-export default Home;
+}

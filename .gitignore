@@ -23,4 +23,4 @@ dist-ssr
 *.sln
 *.sw?
 .env
-backend/vaca/__pycache__/*.*
+backend/vaca/__pycache__/*
