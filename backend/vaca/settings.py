@@ -84,14 +84,17 @@ WSGI_APPLICATION = 'vaca.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('PG_DB'),
-        'USER': os.getenv('PG_USER'),
-        'PASSWORD': os.getenv('PG_PASSWORD'),
-        'HOST': os.getenv('PG_HOST'),
-        'PORT': os.getenv('PG_PORT'),
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': (
+            f"{os.getenv('DB_HOST')}:"
+            f"{os.getenv('DB_PORT')}/"
+            f"{os.getenv('DB_SERVICE')}"
+        ),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 

@@ -7,7 +7,11 @@ class LoginView(TokenObtainPairView):
         response = super().post(request, *args, **kwargs)
         tokens = response.data
 
-        res = Response({"detail": "Login OK"})
+        res = Response({
+            "detail": "Login OK",
+            "access": tokens["access"],   # 👈 AQUÍ
+            "refresh": tokens["refresh"]  # opcional
+        })
 
         res.set_cookie(
             key="access_token",

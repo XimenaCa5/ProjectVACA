@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { login } from "./auth/auth.api";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,17 +13,14 @@ export default function Login() {
     setLoading(true);
 
     try {
-      
       await login(username, password);
 
       window.location.href = "/home";
-
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-
   };
 
   return (
@@ -50,7 +45,7 @@ export default function Login() {
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form  onSubmit={handleSubmit} class="space-y-6">
+          <form onSubmit={handleSubmit} class="space-y-6">
             <div>
               <label
                 for="Login"
@@ -113,7 +108,6 @@ export default function Login() {
               </button>
             </div>
           </form>
-
         </div>
       </div>
     </>
