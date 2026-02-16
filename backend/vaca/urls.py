@@ -23,7 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path("api/login/", views.LoginView.as_view(), name="login"),
-    #path('api/register/', views.register_view, name='register'),
+    path("api/register/", views.RegisterView.as_view(), name="register"),
+    path("api/users/", views.UsersListView.as_view(), name="users"),
+    path("api/users/<int:pk>/", views.UserDetailView.as_view(), name="users"),
+
     #path('api/profile/', views.profile_view, name='profile'),
     #path('api/logout/', views.logout_view, name='logout'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
