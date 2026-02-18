@@ -1,5 +1,7 @@
 import { useState } from "react";
+import logo from "../../assets/logo_vaca.png";
 import { login } from "./auth/auth.api";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -15,7 +17,7 @@ export default function Login() {
     try {
       await login(username, password);
 
-      window.location.href = "/home";
+      window.location.href = "/admin";
     } catch (err) {
       setError(err.message);
     } finally {
@@ -34,13 +36,9 @@ export default function Login() {
 
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-            alt="Your Company"
-            class="mx-auto h-10 w-auto"
-          />
-          <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
-            Sign in to your account
+          <img src={logo} alt="Your Company" class="mx-auto h-30 w-auto" />
+          <h2 class="mt-5 text-center text-2xl/9 font-bold tracking-tight text-white">
+            Ingresa con tu cuenta
           </h2>
         </div>
 
@@ -51,7 +49,7 @@ export default function Login() {
                 for="Login"
                 class="block text-sm/6 font-medium text-gray-100"
               >
-                Email address
+                username
               </label>
               <div class="mt-2">
                 <input
@@ -73,14 +71,14 @@ export default function Login() {
                   for="password"
                   class="block text-sm/6 font-medium text-gray-100"
                 >
-                  Password
+                  Contraseña
                 </label>
                 <div class="text-sm">
                   <a
                     href="#"
                     class="font-semibold text-indigo-400 hover:text-indigo-300"
                   >
-                    Forgot password?
+                    ¿Olvidaste tu contraseña?
                   </a>
                 </div>
               </div>
@@ -104,8 +102,17 @@ export default function Login() {
                 disabled={loading}
                 class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
-                {loading ? "Ingresando..." : "Sing in"}
+                {loading ? "Ingresando..." : "Ingresar Sesión"}
               </button>
+            </div>
+
+            <div className="text-sm">
+              <Link
+                to="/register"
+                className="font-semibold text-indigo-400 hover:text-indigo-300"
+              >
+                ¿No tienes cuenta? Regístrate aquí
+              </Link>
             </div>
           </form>
         </div>
